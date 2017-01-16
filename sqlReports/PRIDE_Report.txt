@@ -1,0 +1,163 @@
+<ReportName>PRIDE Report</ReportName>
+<ReportTitle></ReportTitle>
+<AfterTitle></AfterTitle>
+<ReportGroup></ReportGroup>
+<ReportDescription></ReportDescription>
+<SQLQuery><textarea name="UF-00600520929">WITH tot AS (select 
+  pmd.studentid, 
+  pmd.schoolid, 
+  pmd.GRADE_LEVEL, 
+  round(sum(
+    CASE
+    when pad.total_minutes is null then pmd.potential_minutes_present
+    else pad.total_minutes
+    end)/60,2) act_min,
+  round(sum(pmd.potential_minutes_present)/60,2) pot_min, 
+  round(sum(pmd.potential_minutes_present)/60 - sum(
+    CASE
+    when pad.total_minutes is null then pmd.potential_minutes_present
+    else pad.total_minutes
+    end)/60,2) min_diff,
+  count(*) memb
+from ps_membership_defaults pmd
+left outer join PS_ATTENDANCE_DAILY pad
+on pmd.studentid=pad.studentid
+and pmd.calendardate=pad.att_Date
+where pmd.calendardate &gt;= '%param1%' and pmd.calendardate &lt;= '%param2%'
+group by pmd.studentid, pmd.schoolid, pmd.GRADE_LEVEL),
+
+sch_memb as (
+  select 
+    schoolid,
+    max(tot.memb) max_memb
+  from tot
+  group by schoolid
+),
+
+stu_odr as (
+  select
+   students.id st_id,
+   count(*) as tot
+  from
+   students
+  join
+   log
+  on
+   students.id = log.studentid
+  where
+   log.logtypeid = -100000
+  and
+   log.entry_date between '%param1%' and '%param2%'
+  and
+   students.schoolid = ~(curschoolid)
+  group by
+   students.id
+),
+
+stu_grades as (
+  select
+   studentid,
+   SUM(case when grade like 'A%' then 1 else 0 end) Agrade,
+   SUM(case when grade like 'B%' then 1 else 0 end) Bgrade,
+   SUM(case when grade like 'C%' then 1 else 0 end) Cgrade,
+   SUM(case when grade like 'D%' then 1 else 0 end) Dgrade,
+   SUM(case when grade like 'F%' then 1 else 0 end) Fgrade
+  from
+   storedgrades
+  where
+   storecode = '%param3%' 
+  and 
+   datestored &gt; '%param1%'
+  and
+   schoolname = 'Neosho High School'
+  group by
+   studentid
+),
+
+TotalPossible as (
+    Select studentid, 
+    sum(attendancevalue) as present,
+    sum(membershipvalue)-sum(attendancevalue) as absent,
+    sum(membershipvalue) as TotalPossible
+
+    From PS_AdaAdm_Defaults_All 
+
+    Where attendancevalue is not NULL and calendardate&gt;='%param1%' and calendardate&lt;='%param2%'
+    Group by studentid
+)
+
+
+SELECT students.student_number, students.lastfirst, students.grade_level, '%param3%', stu_grades.Agrade, stu_grades.Bgrade, stu_grades.Cgrade, stu_grades.Dgrade, stu_grades.Fgrade, round((tot.act_min / tot.pot_min) * 100,2), nvl(to_number(stu_odr.tot), 0), 
+(case when to_number(stu_grades.Fgrade, '99') = 0 and to_number(stu_grades.Dgrade, '99') = 0 and to_number(stu_grades.Cgrade, '99') = 0 and round((tot.act_min / tot.pot_min) * 100,2) &gt;= %param4% and NVL(to_number(stu_odr.tot), 0) = 0 then 'Gold'
+          when to_number(stu_odr.tot, '99') &gt;= 1 then 'Bronze' 
+          when to_number(stu_grades.Fgrade, '99') = 0 and to_number(stu_grades.Dgrade, '99') = 0 and round((tot.act_min / tot.pot_min) * 100,2) &gt;= %param5% and NVL(to_number(stu_odr.tot), 0) = 0 then 'Silver'
+          else 'Bronze' end), TotalPossible.absent
+FROM students 
+JOIN tot
+ON students.id = tot.studentid
+LEFT OUTER JOIN stu_grades
+ON stu_grades.studentid = students.id
+LEFT OUTER JOIN stu_odr
+ON stu_odr.st_id = stu_grades.studentid
+LEFT JOIN TotalPossible
+ON TotalPossible.studentid = students.id
+WHERE students.schoolid = ~(curschoolid)
+AND tot.pot_min &gt; 0
+AND students.enroll_status = 0
+  </textarea></SQLQuery>
+<ReportHeader><th>Student ID</th><th>Student Name</th><th>Grade</th><th>Term</th><th>A</th><th>B</th><th>C</th><th>D</th><th>F</th><th>Attendance %</th><th>Referrals</th><th>Status</th><th>Days Absent</th></ReportHeader>
+<CreateStudentSelection>0</CreateStudentSelection>
+<StudentSelectionQuery></StudentSelectionQuery>
+<CreateStudentSelectionB></CreateStudentSelectionB>
+<IncludeRowNumber>0</IncludeRowNumber>
+<OpeninNewWindow>0</OpeninNewWindow>
+<HideCopyButton></HideCopyButton>
+<HideCSVButton></HideCSVButton>
+<HideTabButton></HideTabButton>
+<HidePDFButton></HidePDFButton>
+<ShowSearchBox></ShowSearchBox>
+<ShowResultsInfo></ShowResultsInfo>
+<ParameterName1>StartDate</ParameterName1>
+<ParameterVal1>12/1/2016</ParameterVal1>
+<ParameterCal1>1</ParameterCal1>
+<ParameterOpt1></ParameterOpt1>
+<ParameterName2>EndDate</ParameterName2>
+<ParameterVal2>12/16/2016</ParameterVal2>
+<ParameterCal2>1</ParameterCal2>
+<ParameterOpt2></ParameterOpt2>
+<ParameterName3>Grade StoreCode</ParameterName3>
+<ParameterVal3>S1</ParameterVal3>
+<ParameterCal3></ParameterCal3>
+<ParameterOpt3></ParameterOpt3>
+<ParameterName4>GoldCutOff</ParameterName4>
+<ParameterVal4>90</ParameterVal4>
+<ParameterCal4></ParameterCal4>
+<ParameterOpt4></ParameterOpt4>
+<ParameterName5>Silver</ParameterName5>
+<ParameterVal5>80</ParameterVal5>
+<ParameterCal5></ParameterCal5>
+<ParameterOpt5></ParameterOpt5>
+<PdfOrientation></PdfOrientation>
+<NoCSVQuotes></NoCSVQuotes>
+<NoRowSel></NoRowSel>
+<ShowSHC></ShowSHC>
+<UseColRe></UseColRe>
+<UseFixHdr></UseFixHdr>
+<HidePrint></HidePrint>
+<ReportNotes></ReportNotes>
+<UseColFilt></UseColFilt>
+<UseRowGroups></UseRowGroups>
+<UseRowGroupsOptions>Opt1</UseRowGroupsOptions>
+<DisplayRowGroupsCol></DisplayRowGroupsCol>
+<UseRowGroupsCounts></UseRowGroupsCounts>
+<sqlChartsReport></sqlChartsReport>
+<InitialsqlChart></InitialsqlChart>
+<InitialChartName></InitialChartName>
+<RowGroupsDesc></RowGroupsDesc>
+<sqlExportsReport></sqlExportsReport>
+<FLSMapField></FLSMapField>
+<ExcFrmList></ExcFrmList>
+<ExecGrp>9,</ExecGrp>
+<ValueLi3>0</ValueLi3>
+<NoHeaderRow></NoHeaderRow>
+<ReportDirections>The attendance percentage will be calculated using the dates and the grades will be counted by the store code.</ReportDirections>
