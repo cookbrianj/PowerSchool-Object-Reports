@@ -1,0 +1,84 @@
+<ReportName>Nurse Visits In Date Range</ReportName>
+<ReportTitle>Visits for Students in Selected Range</ReportTitle>
+<AfterTitle></AfterTitle>
+<ReportGroup></ReportGroup>
+<ReportDescription></ReportDescription>
+<SQLQuery><textarea name="UF-00600518399">SELECT 
+ s.lastfirst as lastfirst, 
+ l.Entry_Date,
+ l.Entry_Author,
+ l.Entry
+FROM
+ Log l
+INNER JOIN 
+ STUDENTS s
+~[if#cursel.%param3%=Yes]
+  INNER JOIN ~[temp.table.current.selection:students] stusel ON stusel.dcid=s.dcid
+[/if#cursel]
+ON
+ l.Studentid = s.id
+WHERE
+ l.LogTypeID = 675 
+ AND l.Entry_Date between '%param1%'  and  '%param2%'
+ AND s.enroll_status = 0 
+ AND s.schoolid = ~(curschoolid)
+ORDER BY
+ s.lastfirst
+
+</textarea></SQLQuery>
+<ReportHeader><th>Name</th><th>Entry Date</th><th>Entered By</th><th>Entry</th></ReportHeader>
+<CreateStudentSelection>0</CreateStudentSelection>
+<StudentSelectionQuery></StudentSelectionQuery>
+<CreateStudentSelectionB></CreateStudentSelectionB>
+<IncludeRowNumber>1</IncludeRowNumber>
+<OpeninNewWindow>0</OpeninNewWindow>
+<HideCopyButton></HideCopyButton>
+<HideCSVButton></HideCSVButton>
+<HideTabButton></HideTabButton>
+<HidePDFButton></HidePDFButton>
+<ShowSearchBox></ShowSearchBox>
+<ShowResultsInfo></ShowResultsInfo>
+<ParameterName1>Start Date</ParameterName1>
+<ParameterVal1>12/1/2016</ParameterVal1>
+<ParameterCal1>1</ParameterCal1>
+<ParameterOpt1></ParameterOpt1>
+<ParameterName2>End Date</ParameterName2>
+<ParameterVal2>12/16/2016</ParameterVal2>
+<ParameterCal2>1</ParameterCal2>
+<ParameterOpt2></ParameterOpt2>
+<ParameterName3>Search Only Currently Selected Students</ParameterName3>
+<ParameterVal3>No</ParameterVal3>
+<ParameterCal3></ParameterCal3>
+<ParameterOpt3>yesorno</ParameterOpt3>
+<ParameterName4></ParameterName4>
+<ParameterVal4></ParameterVal4>
+<ParameterCal4></ParameterCal4>
+<ParameterOpt4></ParameterOpt4>
+<ParameterName5></ParameterName5>
+<ParameterVal5></ParameterVal5>
+<ParameterCal5></ParameterCal5>
+<ParameterOpt5></ParameterOpt5>
+<PdfOrientation></PdfOrientation>
+<NoCSVQuotes></NoCSVQuotes>
+<NoRowSel></NoRowSel>
+<ShowSHC></ShowSHC>
+<UseColRe></UseColRe>
+<UseFixHdr></UseFixHdr>
+<HidePrint>1</HidePrint>
+<ReportNotes></ReportNotes>
+<UseColFilt></UseColFilt>
+<UseRowGroups>1</UseRowGroups>
+<UseRowGroupsOptions>Opt2</UseRowGroupsOptions>
+<DisplayRowGroupsCol>1</DisplayRowGroupsCol>
+<UseRowGroupsCounts>1</UseRowGroupsCounts>
+<sqlChartsReport></sqlChartsReport>
+<InitialsqlChart></InitialsqlChart>
+<InitialChartName></InitialChartName>
+<RowGroupsDesc></RowGroupsDesc>
+<sqlExportsReport></sqlExportsReport>
+<FLSMapField></FLSMapField>
+<ExcFrmList></ExcFrmList>
+<ExecGrp>6,</ExecGrp>
+<ValueLi3>0</ValueLi3>
+<NoHeaderRow></NoHeaderRow>
+<ReportDirections></ReportDirections>
