@@ -23,7 +23,7 @@ from ps_membership_defaults pmd
 left outer join PS_ATTENDANCE_DAILY pad
 on pmd.studentid=pad.studentid
 and pmd.calendardate=pad.att_Date
-where pmd.calendardate &gt;= '%param1%' and pmd.calendardate &lt;= '%param2%'
+where pmd.calendardate >= '%param1%' and pmd.calendardate <= '%param2%'
 group by pmd.studentid, pmd.schoolid, pmd.GRADE_LEVEL),
 
 sch_memb as (
@@ -67,7 +67,7 @@ stu_grades as (
   where
    storecode = '%param3%' 
   and 
-   datestored &gt; '%param1%'
+   datestored > '%param1%'
   and
    schoolname = 'Neosho High School'
   group by
@@ -82,15 +82,15 @@ TotalPossible as (
 
     From PS_AdaAdm_Defaults_All 
 
-    Where attendancevalue is not NULL and calendardate&gt;='%param1%' and calendardate&lt;='%param2%'
+    Where attendancevalue is not NULL and calendardate>='%param1%' and calendardate<='%param2%'
     Group by studentid
 )
 
 
 SELECT students.student_number, students.lastfirst, students.grade_level, '%param3%', stu_grades.Agrade, stu_grades.Bgrade, stu_grades.Cgrade, stu_grades.Dgrade, stu_grades.Fgrade, round((tot.act_min / tot.pot_min) * 100,2), nvl(to_number(stu_odr.tot), 0), 
-(case when to_number(stu_grades.Fgrade, '99') = 0 and to_number(stu_grades.Dgrade, '99') = 0 and to_number(stu_grades.Cgrade, '99') = 0 and round((tot.act_min / tot.pot_min) * 100,2) &gt;= %param4% and NVL(to_number(stu_odr.tot), 0) = 0 then 'Gold'
-          when to_number(stu_odr.tot, '99') &gt;= 1 then 'Bronze' 
-          when to_number(stu_grades.Fgrade, '99') = 0 and to_number(stu_grades.Dgrade, '99') = 0 and round((tot.act_min / tot.pot_min) * 100,2) &gt;= %param5% and NVL(to_number(stu_odr.tot), 0) = 0 then 'Silver'
+(case when to_number(stu_grades.Fgrade, '99') = 0 and to_number(stu_grades.Dgrade, '99') = 0 and to_number(stu_grades.Cgrade, '99') = 0 and round((tot.act_min / tot.pot_min) * 100,2) >= %param4% and NVL(to_number(stu_odr.tot), 0) = 0 then 'Gold'
+          when to_number(stu_odr.tot, '99') >= 1 then 'Bronze' 
+          when to_number(stu_grades.Fgrade, '99') = 0 and to_number(stu_grades.Dgrade, '99') = 0 and round((tot.act_min / tot.pot_min) * 100,2) >= %param5% and NVL(to_number(stu_odr.tot), 0) = 0 then 'Silver'
           else 'Bronze' end), TotalPossible.absent
 FROM students 
 JOIN tot
@@ -102,7 +102,7 @@ ON stu_odr.st_id = stu_grades.studentid
 LEFT JOIN TotalPossible
 ON TotalPossible.studentid = students.id
 WHERE students.schoolid = ~(curschoolid)
-AND tot.pot_min &gt; 0
+AND tot.pot_min > 0
 AND students.enroll_status = 0
   </textarea></SQLQuery>
 <ReportHeader><th>Student ID</th><th>Student Name</th><th>Grade</th><th>Term</th><th>A</th><th>B</th><th>C</th><th>D</th><th>F</th><th>Attendance %</th><th>Referrals</th><th>Status</th><th>Days Absent</th></ReportHeader>
