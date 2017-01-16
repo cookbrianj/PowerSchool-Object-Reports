@@ -1,0 +1,90 @@
+<ReportName>HaparaStudents-1617</ReportName>
+<ReportTitle></ReportTitle>
+<AfterTitle></AfterTitle>
+<ReportGroup></ReportGroup>
+<ReportDescription></ReportDescription>
+<SQLQuery><textarea name="UF-00600520353">SELECT DISTINCT
+ ps_customfields.getstudentscf(Students.id,'student_email'), 
+replace(replace(replace(replace(Courses.course_name || decode(cc.TermID,2601,'S1',decode(cc.TermID,2602,'S2',decode(cc.TermID,2603,'Q1',decode(cc.TermID,2604,'Q2',decode(cc.TermID,2605,'Q3',decode(cc.TermID,2606,'Q4','YR')))))), '-','') || '-' || cc.section_number || '-1617', ' ', '' ), '/',''), ',','') as Class
+FROM
+ CC
+JOIN
+ Students
+ON
+ CC.Studentid = Students.id
+JOIN
+ Courses
+ON 
+ cc.course_number = courses.course_number
+JOIN
+ Sections
+ON
+ Sections.id = cc.SectionID
+LEFT JOIN 
+ U_DEF_EXT_SECTIONS s2 
+ON 
+ Sections.DCID = s2.SectionsDCID
+WHERE
+ CC.TermID >= 2600
+AND
+ CC.TermID < 2699
+AND
+ s2.upload = 1
+AND
+ Students.enroll_status = 0</textarea></SQLQuery>
+<ReportHeader><th>Email</th><th>Class</th></ReportHeader>
+<CreateStudentSelection>0</CreateStudentSelection>
+<StudentSelectionQuery></StudentSelectionQuery>
+<CreateStudentSelectionB></CreateStudentSelectionB>
+<IncludeRowNumber>0</IncludeRowNumber>
+<OpeninNewWindow>0</OpeninNewWindow>
+<HideCopyButton></HideCopyButton>
+<HideCSVButton></HideCSVButton>
+<HideTabButton></HideTabButton>
+<HidePDFButton></HidePDFButton>
+<ShowSearchBox></ShowSearchBox>
+<ShowResultsInfo></ShowResultsInfo>
+<ParameterName1></ParameterName1>
+<ParameterVal1></ParameterVal1>
+<ParameterCal1></ParameterCal1>
+<ParameterOpt1></ParameterOpt1>
+<ParameterName2></ParameterName2>
+<ParameterVal2></ParameterVal2>
+<ParameterCal2></ParameterCal2>
+<ParameterOpt2></ParameterOpt2>
+<ParameterName3></ParameterName3>
+<ParameterVal3></ParameterVal3>
+<ParameterCal3></ParameterCal3>
+<ParameterOpt3></ParameterOpt3>
+<ParameterName4></ParameterName4>
+<ParameterVal4></ParameterVal4>
+<ParameterCal4></ParameterCal4>
+<ParameterOpt4></ParameterOpt4>
+<ParameterName5></ParameterName5>
+<ParameterVal5></ParameterVal5>
+<ParameterCal5></ParameterCal5>
+<ParameterOpt5></ParameterOpt5>
+<PdfOrientation></PdfOrientation>
+<NoCSVQuotes></NoCSVQuotes>
+<NoRowSel></NoRowSel>
+<ShowSHC></ShowSHC>
+<UseColRe></UseColRe>
+<UseFixHdr></UseFixHdr>
+<HidePrint></HidePrint>
+<ReportNotes></ReportNotes>
+<UseColFilt></UseColFilt>
+<UseRowGroups></UseRowGroups>
+<UseRowGroupsOptions>Opt1</UseRowGroupsOptions>
+<DisplayRowGroupsCol></DisplayRowGroupsCol>
+<UseRowGroupsCounts></UseRowGroupsCounts>
+<sqlChartsReport></sqlChartsReport>
+<InitialsqlChart></InitialsqlChart>
+<InitialChartName></InitialChartName>
+<RowGroupsDesc></RowGroupsDesc>
+<sqlExportsReport>1</sqlExportsReport>
+<FLSMapField></FLSMapField>
+<ExcFrmList></ExcFrmList>
+<ExecGrp>9,</ExecGrp>
+<ValueLi3>0</ValueLi3>
+<NoHeaderRow></NoHeaderRow>
+<ReportDirections></ReportDirections>
