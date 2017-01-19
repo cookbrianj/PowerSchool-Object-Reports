@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Neosho Absence</title>
+<!-- required scripts -->
+	~[wc:commonscripts] 
+<!-- Required style sheets: screen.css, and print.css --> 
+	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+	<link href="/images/css/print.css" rel="stylesheet" media="print">
+</head> 
+<body> 
+	~[wc:admin_header_css] 
+<!-- breadcrumb start --><a href="/admin/home.html" target="_top">Start Page</a> &gt; <a href="/admin/reports/home.html">Reports</a> &gt; Neosho Absence Information<!-- breadcrumb end -->
+<!-- start of main menu and content --> 
+	~[wc:admin_navigation_css] 
+
+<!-- Start of Page --> 
+	<h1>Neosho Absence Information</h1> 
+<!-- start of content area --> 
+	<div class="box-round" data-ng-controller="myController" data-ng-cloak> 
+        <center><div id="spinner" data-pss-wait-spinner="huge" ng-show="loading"><br/><br/></div><div id="loadingtext" ng-show="loading">Generating Report<br/><br/></div></center>
+        <div id="myGrid"
+          data-pss-grid-widget
+          data-data="attendanceData"
+          data-filtered-data="attendanceDataFiltered"
+          data-filter-constraint="no-filters"
+          data-client-side-pagination="false"
+          ng-hide="loading">
+        <table class="grid">
+        <thead>
+        <tr>
+        <th>#</th>
+        <th data-pss-sort-fields="studentname|text">Student</th>
+        <th data-pss-sort-fields="gradelevel|number">Grade</th>
+        <th data-pss-sort-fields="totMemb|number">Days Enrolled</th>
+        <th data-pss-sort-fields="minDiff|number">Hrs Absent</th>
+        <th data-pss-sort-fields="attendPct|number">Attendance Pct</th>
+        <th data-pss-sort-fields="attendDays|number">MS JH HS Days</th>
+        <th data-pss-sort-fields="attendDays|number">Field Days</th>
+        <th data-pss-sort-fields="fourDay|text">4 Day Call</th>
+        <th data-pss-sort-fields="sixDay|text">6 Day Call</th>
+        <th data-pss-sort-fields="eightDay|text">8 Day Call</th>
+        <th data-pss-sort-fields="twelDay|text">12 Day Call</th>
+        <th data-pss-sort-fields="sixtnDay|text">16 Day Call</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        <tr data-ng-repeat="student in attendanceDataFiltered" {{ student.attendPct|number < 90 ? 'bgcolor=#FF0000' : 'bgcolor=#FFFFFF' }}>
+        <td>{{ $index }}</td>
+        <td><a href="https://neosho.powerschool.com/admin/students/studentpages/dailyattinfoadm.html?frn=001{{student.dcid}}" target="_blank">{{ student.studentname }}</a></td>
+        <td>{{ student.gradelevel }} </td>
+        <td>{{ student.totMemb|number:2 }} </td>
+        <td>{{ student.minDiff|number:2 }} </td>
+        <td>{{ student.attendPct|number }} </td>
+        <td>{{ student.attendDays|number }} </td>
+        <td><a href="https://neosho.powerschool.com/admin/students/neoshoattendinfo.html?frn=001{{student.dcid}}" target="_blank">{{ student.fieldDays|number }}</a> </td>
+        <td><a href="https://neosho.powerschool.com/admin/students/neoshoattendinfo.html?frn=001{{student.dcid}}" target="_blank">{{ student.fourDay }}</a> </td>
+        <td><a href="https://neosho.powerschool.com/admin/students/neoshoattendinfo.html?frn=001{{student.dcid}}" target="_blank">{{ student.sixDay }}</a> </td>
+        <td><a href="https://neosho.powerschool.com/admin/students/neoshoattendinfo.html?frn=001{{student.dcid}}" target="_blank">{{ student.eightDay }}</a> </td>
+        <td><a href="https://neosho.powerschool.com/admin/students/neoshoattendinfo.html?frn=001{{student.dcid}}" target="_blank">{{ student.twelDay }}</a> </td>
+        <td><a href="https://neosho.powerschool.com/admin/students/neoshoattendinfo.html?frn=001{{student.dcid}}" target="_blank">{{ student.sixtnDay }}</a> </td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+
+        </div>
+        </center>
+
+
+	</div> 
+<!-- end of content area --> 
+	~[wc:admin_footer_css] 
+</body> 
+
+<script>
+ require(['angular', 'neosho_absence'], function(angular) {
+  angular.bootstrap(document, ['myModule']);
+});
+</script>
+
+</html>

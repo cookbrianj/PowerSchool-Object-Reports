@@ -1,0 +1,49 @@
+[~[tlist_sql; 
+WITH tot AS (select 
+  pmd.studentid, 
+  pmd.schoolid schoolid, 
+  pmd.GRADE_LEVEL, 
+  round(sum(
+    CASE
+    when pad.total_minutes is null then pmd.potential_minutes_present
+    else pad.total_minutes
+    end)/60,2) act_min,
+  round(sum(pmd.potential_minutes_present)/60,2) pot_min, 
+  round(sum(pmd.potential_minutes_present)/60 - sum(
+    CASE
+    when pad.total_minutes is null then pmd.potential_minutes_present
+    else pad.total_minutes
+    end)/60,2) min_diff,
+  count(*) memb
+
+from ps_membership_defaults pmd
+left outer join PS_ATTENDANCE_DAILY pad
+on pmd.studentid=pad.studentid
+and pmd.calendardate=pad.att_Date
+where pmd.yearid = ~(curyearid)
+group by pmd.studentid, pmd.schoolid, pmd.GRADE_LEVEL),
+
+sch_memb as (
+  select 
+    schoolid,
+    max(tot.memb) max_memb
+  from tot
+  group by schoolid
+)
+
+SELECT DISTINCT students.lastfirst, students.dcid, tot.grade_level, tot.memb, to_char(tot.min_diff, '999.99'), round((tot.act_min / tot.pot_min) * 100,2) totPct,to_char(to_number(to_number(tot.min_diff)/to_number('6.2')), '99'),to_char(to_number(to_number(tot.min_diff)/to_number('3')), '99'),to_char(s2.FOURDAY_ABSENCE_CALL_DATE, 'mm/dd/yyyy') fourDay, to_char(s2.SIXDAY_ABSENCE_CALL_DATE, 'mm/dd/yyyy') sixDay, to_char(s2.EIGHTDAY_ABSENCE_CALL_DATE, 'mm/dd/yyyy') eightDay, to_char(s2.TWELDAY_ABSENCE_CALL_DATE, 'mm/dd/yyyy') twelDay, to_char(s2.SIXTNDAY_ABSENCE_CALL_DATE, 'mm/dd/yyyy') sixtnDay
+FROM tot 
+JOIN students
+ON students.id = tot.studentid
+LEFT JOIN 
+ U_DEF_EXT_STUDENTS s2 
+ON 
+ students.DCID = s2.studentsDCID
+WHERE students.enroll_status = 0
+AND students.schoolid = ~(curschoolid)
+AND tot.schoolid = ~(curschoolid)
+AND tot.pot_min > 0
+ORDER BY students.lastfirst]
+{"studentname" : "~(students.lastfirst)", "dcid" : "~(students.dcid)", "gradelevel" : "~(tot.grade_level)", "totMemb" : ~(tot.memb), "minDiff" : "~(tot.min_diff)", "attendPct" : ~(totPct), "attendDays" : ~(attendDays), "fieldDays" : ~(fieldDays), "fourDay" : "~(fourDay)", "sixDay" : "~(sixDay)", "eightDay" : "~(eightDay)", "twelDay" : "~(twelDay)", "sixtnDay" : "~(sixtnDay)"},
+[/tlist_sql]
+{}]
