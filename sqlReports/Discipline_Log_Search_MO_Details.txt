@@ -1,0 +1,91 @@
+<ReportName>Discipline Search - Type and Date</ReportName>
+<ReportTitle></ReportTitle>
+<AfterTitle></AfterTitle>
+<ReportGroup></ReportGroup>
+<ReportDescription></ReportDescription>
+<SQLQuery><textarea name="UF-00600521170">SELECT
+ Students.lastfirst,
+ Students.grade_level,
+ Students.student_number,
+ to_char(Log.Discipline_IncidentDate,'MM/DD/YYYY'),
+ Log.Consequence,
+ to_char(Log.Entry_Date,'MM/DD/YYYY'),
+ S_MO_LOG_X.WeaponType,
+ S_MO_LOG_X.ActionTaken,
+ S_MO_LOG_X.Duration,
+ S_MO_LOG_X.OffenseType,
+ Log.Entry
+FROM
+ Students
+JOIN
+ Log
+ON
+ Students.id = Log.StudentID
+JOIN
+ S_MO_LOG_X
+ON
+ Log.DCID = S_MO_LOG_X.LOGDCID
+WHERE
+ Log.LogTypeID = -100000
+AND
+ Log.Consequence = '%param3%'
+AND
+ Log.Entry_Date between '%param1%'  and  '%param2%'
+AND 
+ Students.schoolid = ~(curschoolid)</textarea></SQLQuery>
+<ReportHeader><th>Student</th><th>GradeLevel</th><th>StudentNumber</th><th>IncidentDate</th><th>Consequence</th><th>Entry Date</th><th>Weapon</th><th>ActionTaken</th><th>Duration</th><th>OffenseType</th><th>Entry</th></ReportHeader>
+<CreateStudentSelection>0</CreateStudentSelection>
+<StudentSelectionQuery></StudentSelectionQuery>
+<CreateStudentSelectionB></CreateStudentSelectionB>
+<IncludeRowNumber>1</IncludeRowNumber>
+<OpeninNewWindow>0</OpeninNewWindow>
+<HideCopyButton></HideCopyButton>
+<HideCSVButton></HideCSVButton>
+<HideTabButton></HideTabButton>
+<HidePDFButton></HidePDFButton>
+<ShowSearchBox></ShowSearchBox>
+<ShowResultsInfo></ShowResultsInfo>
+<ParameterName1>StartDate</ParameterName1>
+<ParameterVal1>12/1/2016</ParameterVal1>
+<ParameterCal1>1</ParameterCal1>
+<ParameterOpt1></ParameterOpt1>
+<ParameterName2>EndDate</ParameterName2>
+<ParameterVal2>12/23/2016</ParameterVal2>
+<ParameterCal2>1</ParameterCal2>
+<ParameterOpt2></ParameterOpt2>
+<ParameterName3>Consequence</ParameterName3>
+<ParameterVal3>ISS</ParameterVal3>
+<ParameterCal3></ParameterCal3>
+<ParameterOpt3></ParameterOpt3>
+<ParameterName4></ParameterName4>
+<ParameterVal4></ParameterVal4>
+<ParameterCal4></ParameterCal4>
+<ParameterOpt4></ParameterOpt4>
+<ParameterName5></ParameterName5>
+<ParameterVal5></ParameterVal5>
+<ParameterCal5></ParameterCal5>
+<ParameterOpt5></ParameterOpt5>
+<PdfOrientation></PdfOrientation>
+<NoCSVQuotes></NoCSVQuotes>
+<NoRowSel></NoRowSel>
+<ShowSHC></ShowSHC>
+<UseColRe>1</UseColRe>
+<UseFixHdr></UseFixHdr>
+<HidePrint></HidePrint>
+<ReportNotes></ReportNotes>
+<UseColFilt></UseColFilt>
+<UseRowGroups></UseRowGroups>
+<UseRowGroupsOptions>Opt1</UseRowGroupsOptions>
+<DisplayRowGroupsCol></DisplayRowGroupsCol>
+<UseRowGroupsCounts></UseRowGroupsCounts>
+<sqlChartsReport></sqlChartsReport>
+<InitialsqlChart></InitialsqlChart>
+<InitialChartName></InitialChartName>
+<RowGroupsDesc></RowGroupsDesc>
+<sqlExportsReport></sqlExportsReport>
+<FLSMapField></FLSMapField>
+<ExcFrmList></ExcFrmList>
+<ExecGrp>2,3,4,7,9,10,</ExecGrp>
+<ValueLi3>0</ValueLi3>
+<NoHeaderRow></NoHeaderRow>
+<ReportDirections></ReportDirections>
