@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Neosho Attendance Contact History</title>
+<!-- required scripts -->
+	~[wc:commonscripts] 
+<!-- Required style sheets: screen.css, and print.css -->
+	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+	<link href="/images/css/print.css" rel="stylesheet" media="print">
+</head> 
+<body> 
+	~[wc:admin_header_frame_css]
+	<!-- breadcrumb start -->
+		<a href="/admin/home.html" target="_top">Start Page</a> &gt; <a href="/admin/students/home.html?selectstudent=nosearch" target="_top">Student Selection</a> &gt; Neosho Attendance Contact History
+	<!-- breadcrumb end -->
+~[wc:admin_navigation_frame_css]
+<!-- start of main menu and content -->
+~[wc:title_student_begin_css]Neosho Attendance Contact History~[wc:title_student_end_css]
+<form action="/~[self.page]?frn=~(studentfrn)&changesSaved=true" method="POST">
+<!-- start of content area -->
+~[if.~(gpv.changesSaved)=true]<div class="feedback-confirm">~[text:psx.common.changes_recorded]</div>[/if]
+	<div class="box-round">
+		 <h2>Neosho Attendance Contacts</h2>
+		 <p>
+<table border="0" cellspacing="0" cellpadding="4">
+
+<tr class="headerrow">
+    <td>&nbsp;</td>
+    <td>Call Date</td>
+    <td>Letter Date</td>
+    <td>Person Making Contact</td>
+    <td>Comments</td>
+</tr>
+
+<tr class="~[evenoddrow]">
+	<td class="bold">Four Day</td>
+        <td><input type="text" name="[Students.U_Students_Extension]FOURDAY_ABSENCE_CALL_DATE" value="" size="30"></td>  
+        <td><input type="text" name="[Students.U_Students_Extension]FOURDAY_ABSENCE_LETTER_DATE" value="" size="30"></td>          
+        <td><input type="text" name="[Students.U_Students_Extension]FOURDAY_ABSENCE_CONTACT_PERSON" value="" size="30"></td>  
+        <td><input type="text" name="[Students.U_Students_Extension]FOURDAY_ABSENCE_COMMENTS" value="" size="50"></td>  
+</tr>
+
+<tr class="~[evenoddrow]">
+	<td class="bold">Six Day</td>
+        <td><input type="text" name="[Students.U_Students_Extension]SIXDAY_ABSENCE_CALL_DATE" value="" size="30"></td>  
+        <td><input type="text" name="[Students.U_Students_Extension]SIXDAY_ABSENCE_LETTER_DATE" value="" size="30"></td>          
+        <td><input type="text" name="[Students.U_Students_Extension]SIXDAY_ABSENCE_CONTACT_PERSON" value="" size="30"></td>  
+        <td><input type="text" name="[Students.U_Students_Extension]SIXDAY_ABSENCE_COMMENTS" value="" size="50"></td>  
+</tr>
+
+<tr class="~[evenoddrow]">
+	<td class="bold">Eight Day</td>
+        <td><input type="text" name="[Students.U_Students_Extension]EIGHTDAY_ABSENCE_CALL_DATE" value="" size="30"></td>  
+        <td><input type="text" name="[Students.U_Students_Extension]EIGHTDAY_ABSENCE_LETTER_DATE" value="" size="30"></td>          
+        <td><input type="text" name="[Students.U_Students_Extension]EIGHTDAY_ABSENCE_CONTACT_PER" value="" size="30"></td>  
+        <td><input type="text" name="[Students.U_Students_Extension]EIGHTDAY_ABSENCE_COMMENTS" value="" size="50"></td>  
+</tr>
+
+<tr class="~[evenoddrow]">
+	<td class="bold">Twelve Day</td>
+        <td><input type="text" name="[Students.U_Students_Extension]TWELDAY_ABSENCE_CALL_DATE" value="" size="30"></td>  
+        <td><input type="text" name="[Students.U_Students_Extension]TWELDAY_ABSENCE_LETTER_DATE" value="" size="30"></td>          
+        <td><input type="text" name="[Students.U_Students_Extension]TWELDAY_ABSENCE_CONTACT_PER" value="" size="30"></td>  
+        <td><input type="text" name="[Students.U_Students_Extension]TWELDAY_ABSENCE_COMMENTS" value="" size="50"></td>  
+</tr>
+
+<tr class="~[evenoddrow]">
+	<td class="bold">Sixteen Day</td>
+        <td><input type="text" name="[Students.U_Students_Extension]SIXTNDAY_ABSENCE_CALL_DATE" value="" size="30"></td>  
+        <td><input type="text" name="[Students.U_Students_Extension]SIXTNDAY_ABSENCE_LETTER_DATE" value="" size="30"></td>          
+        <td><input type="text" name="[Students.U_Students_Extension]SIXTNDAY_ABSENCE_CONTACT_PER" value="" size="30"></td>  
+        <td><input type="text" name="[Students.U_Students_Extension]SIXTNDAY_ABSENCE_COMMENTS" value="" size="50"></td>  
+</tr>
+
+</table>
+
+<br /><hr><br/>
+
+<table border="0" cellspacing="0" cellpadding="4" with="10">
+<tr class="~[evenoddrow]">
+	<td width="250" class="bold">Date Met With Principal</td>
+        <td style="text-align:left"><input type="text" name="[Students.U_Students_Extension]ATTEND_DATE_MET_PRINCIPAL" value="" size="30"></td>  
+</tr>
+<tr class="~[evenoddrow]">
+	<td width="250" class="bold">Date Referred to Superintendent</td>
+        <td style="text-align:left"><input type="text" name="[Students.U_Students_Extension]ATTEND_DATE_REF_TO_SUPT" value="" size="30"></td>  
+</tr>
+
+<tr class="~[evenoddrow]">
+	<td width="250" class="bold">Date Met With Superintendent</td>
+        <td style="text-align:left"><input type="text" name="[Students.U_Students_Extension]ATTEND_DATE_MET_SUPT" value="" size="30"></td>  
+</tr>
+
+<tr class="~[evenoddrow]">
+	<td width="250" class="bold">Date Referred to Prosecutor</td>
+        <td style="text-align:left""><input type="text" name="[Students.U_Students_Extension]ATTEND_DATE_REF_TO_PROSECUTOR" value="" size="30"></td>  
+</tr>
+</table>
+
+        </p>
+	</div>
+        <div class="button-row"><input type="hidden" name="ac" value="prim">~[submitbutton]</div>
+</form>
+
+
+
+<!-- end of content area -->
+	~[wc:admin_footer_frame_css]
+</body> 
+</html>
