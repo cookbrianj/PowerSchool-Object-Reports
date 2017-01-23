@@ -1,5 +1,0 @@
-<permission_mappings>
-  <permission name='/admin/importexport/home.html'>
-	<implies allow="post">/ws/schema/query/com.neosho.product.students.badge_export</implies>
-  </permission>
-</permission_mappings>
