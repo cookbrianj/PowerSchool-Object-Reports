@@ -1,0 +1,25 @@
+<queries>
+    <query name="com.neosho.product.students.badge_export" coreTable="Students" flattened="false">
+        <summary>Badge System Export</summary>
+        <description>Badge System Export</description>        
+        <columns>
+            <column column="STUDENTS.last_name">Last_Name</column>
+            <column column="STUDENTS.first_name">First_Name</column>
+            <column column="STUDENTS.grade_level">Grade_Level</column>
+            <column column="STUDENTS.home_room">Home_Room</column>
+            <column column="STUDENTS.student_number">Student_Number</column>
+ 		</columns>
+        <sql>
+			<![CDATA[
+                SELECT
+                 Last_Name, First_Name, Grade_Level, Home_Room, Student_Number
+                FROM
+                 Students
+                WHERE
+                 Grade_Level >= 5
+                AND
+                 Enroll_Status = 0
+			]]>
+        </sql>
+    </query>
+</queries>
