@@ -1,0 +1,165 @@
+<ReportName>IMS Global - Users</ReportName>
+<ReportTitle></ReportTitle>
+<AfterTitle></AfterTitle>
+<ReportGroup></ReportGroup>
+<ReportDescription></ReportDescription>
+<SQLQuery><textarea name="UF-00600521668">WITH TeacherSchools AS (SELECT
+ SchoolStaff.Users_DCID,
+ LISTAGG(SchoolStaff.SchoolID, ', ') WITHIN GROUP (ORDER BY SchoolStaff.Users_DCID) AS tschools
+FROM
+ SchoolStaff
+JOIN
+ Users
+ON
+ SchoolStaff.Users_DCID = Users.DCID
+GROUP BY
+ SchoolStaff.Users_DCID),
+
+TeacherInfo AS (SELECT
+ Users.TeacherNumber,
+ 'active' as status,
+ TeacherSchools.tschools AS tSchoolID,
+ Users.Email_Addr,
+ Users.First_Name,
+ Users.Last_Name,
+ CASE SchoolStaff.StaffStatus WHEN 1 then 'teacher' ELSE 'administrator' END as tRole
+FROM
+ SchoolStaff
+JOIN
+ Users
+ON
+ SchoolStaff.Users_DCID = Users.DCID
+JOIN
+ TeacherSchools
+ON
+ TeacherSchools.Users_DCID = Users.DCID
+WHERE
+ SchoolStaff.Status = 1
+),
+
+sce AS (
+  SELECT
+   psc.studentid as studentid,
+   psc.email as email,
+   psc.lastname as lastname,
+   psc.firstname as firstname
+  FROM
+   PSM_Studentcontact psc 
+  INNER JOIN psm_studentcontacttype psct 
+  ON psc.studentcontacttypeid= psct.id AND psct.name='Self'
+),
+
+StudentInfo AS (SELECT DISTINCT
+ Student_Number,
+ CASE enroll_status WHEN 0 then 'active' ELSE 'inactive' END as status,
+ SchoolID,
+ sce.email as scEmail,
+ First_Name,
+ Last_Name
+FROM 
+ sce
+JOIN
+ PSM_Student
+ON
+ PSM_Student.id = sce.studentid
+JOIN
+ Students
+ON
+ Students.Student_Number = PSM_Student.StudentIdentifier 
+WHERE
+ Students.SchoolID &lt;&gt; 999999
+)
+
+SELECT
+ TO_CHAR(TeacherNumber),
+ status,
+ '' as dateLastModified,
+ TO_CHAR(tSchoolID),
+ TO_CHAR(tRole),
+ TO_CHAR(Email_Addr),
+ '' as userId,
+ First_Name,
+ Last_Name,
+ '',
+ TO_CHAR(Email_Addr),
+ '',
+ '',
+ ''
+FROM
+ TeacherInfo
+
+UNION
+
+SELECT
+ TO_CHAR(Student_Number),
+ status,
+ '' as dateLastModified,
+ TO_CHAR(SchoolID),
+ 'student' as role,
+ TO_CHAR(scEmail),
+ '' as userId,
+ First_Name,
+ Last_Name,
+ '',
+ TO_CHAR(scEmail),
+ '',
+ '',
+ ''
+FROM
+ StudentInfo</textarea></SQLQuery>
+<ReportHeader><th>sourceID</th><th>status</th><th>dateLastModified</th><th>orgSourceIds</th><th>role</th><th>username</th><th>userId</th><th>givenName</th><th>familyName</th><th>identifier</th><th>email</th><th>sms</th><th>phone</th><th>agents</th></ReportHeader>
+<CreateStudentSelection>0</CreateStudentSelection>
+<StudentSelectionQuery></StudentSelectionQuery>
+<CreateStudentSelectionB></CreateStudentSelectionB>
+<IncludeRowNumber>0</IncludeRowNumber>
+<OpeninNewWindow>0</OpeninNewWindow>
+<HideCopyButton></HideCopyButton>
+<HideCSVButton></HideCSVButton>
+<HideTabButton></HideTabButton>
+<HidePDFButton></HidePDFButton>
+<ShowSearchBox></ShowSearchBox>
+<ShowResultsInfo></ShowResultsInfo>
+<ParameterName1></ParameterName1>
+<ParameterVal1></ParameterVal1>
+<ParameterCal1></ParameterCal1>
+<ParameterOpt1></ParameterOpt1>
+<ParameterName2></ParameterName2>
+<ParameterVal2></ParameterVal2>
+<ParameterCal2></ParameterCal2>
+<ParameterOpt2></ParameterOpt2>
+<ParameterName3></ParameterName3>
+<ParameterVal3></ParameterVal3>
+<ParameterCal3></ParameterCal3>
+<ParameterOpt3></ParameterOpt3>
+<ParameterName4></ParameterName4>
+<ParameterVal4></ParameterVal4>
+<ParameterCal4></ParameterCal4>
+<ParameterOpt4></ParameterOpt4>
+<ParameterName5></ParameterName5>
+<ParameterVal5></ParameterVal5>
+<ParameterCal5></ParameterCal5>
+<ParameterOpt5></ParameterOpt5>
+<PdfOrientation></PdfOrientation>
+<NoCSVQuotes></NoCSVQuotes>
+<NoRowSel></NoRowSel>
+<ShowSHC></ShowSHC>
+<UseColRe></UseColRe>
+<UseFixHdr></UseFixHdr>
+<HidePrint></HidePrint>
+<ReportNotes></ReportNotes>
+<UseColFilt></UseColFilt>
+<UseRowGroups></UseRowGroups>
+<UseRowGroupsOptions>Opt1</UseRowGroupsOptions>
+<DisplayRowGroupsCol></DisplayRowGroupsCol>
+<UseRowGroupsCounts></UseRowGroupsCounts>
+<sqlChartsReport></sqlChartsReport>
+<InitialsqlChart></InitialsqlChart>
+<InitialChartName></InitialChartName>
+<RowGroupsDesc></RowGroupsDesc>
+<sqlExportsReport></sqlExportsReport>
+<FLSMapField></FLSMapField>
+<ExcFrmList></ExcFrmList>
+<ExecGrp></ExecGrp>
+<ValueLi3>0</ValueLi3>
+<NoHeaderRow></NoHeaderRow>
+<ReportDirections></ReportDirections>

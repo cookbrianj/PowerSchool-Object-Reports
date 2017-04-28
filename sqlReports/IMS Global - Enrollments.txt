@@ -1,0 +1,115 @@
+<ReportName>IMS Global - Enrollments</ReportName>
+<ReportTitle></ReportTitle>
+<AfterTitle></AfterTitle>
+<ReportGroup></ReportGroup>
+<ReportDescription></ReportDescription>
+<SQLQuery><textarea name="UF-00600521665">WITH TchrInfo AS (SELECT
+ DCID,
+ SectionID,
+ SchoolID,
+ TeacherId
+FROM
+ CC
+WHERE
+ DateLeft &gt; To_Date(To_Char(SYSDATE, 'MM/DD/YYYY'), 'MM/DD/YYYY')
+AND
+ DateEnrolled &lt; To_Date(To_Char(SYSDATE, 'MM/DD/YYYY'), 'MM/DD/YYYY')
+ ), 
+
+ StudentInfo AS (SELECT
+ DCID,
+ SectionID,
+ SchoolID,
+ StudentID
+FROM
+ CC
+WHERE
+ DateLeft &gt; To_Date(To_Char(SYSDATE, 'MM/DD/YYYY'), 'MM/DD/YYYY')
+AND
+ DateEnrolled &lt; To_Date(To_Char(SYSDATE, 'MM/DD/YYYY'), 'MM/DD/YYYY')
+)
+
+
+SELECT
+ DCID,
+ SectionID,
+ SchoolID,
+ TO_CHAR((SELECT Users.TeacherNumber FROM Users WHERE Users.DCID = (SELECT SchoolStaff.Users_dcid FROM SchoolStaff WHERE SchoolStaff.id = TeacherId))) AS st_ID,
+ 'teacher',
+ 'active',
+ '',
+ '',
+ ''
+FROM
+ TchrInfo
+
+UNION ALL
+
+SELECT
+ DCID,
+ SectionID,
+ SchoolID,
+ TO_CHAR((SELECT Student_Number FROM Students WHERE id = StudentID)) AS st_ID,
+ 'student',
+ 'active',
+ '',
+ '',
+ ''
+FROM
+ StudentInfo</textarea></SQLQuery>
+<ReportHeader><th>sourceID</th><th>classSourceId</th><th>schoolSourceId</th><th>userSourceId</th><th>role</th><th>status</th><th>dateLastModified</th><th>primary</th></ReportHeader>
+<CreateStudentSelection>0</CreateStudentSelection>
+<StudentSelectionQuery></StudentSelectionQuery>
+<CreateStudentSelectionB></CreateStudentSelectionB>
+<IncludeRowNumber>0</IncludeRowNumber>
+<OpeninNewWindow>0</OpeninNewWindow>
+<HideCopyButton></HideCopyButton>
+<HideCSVButton></HideCSVButton>
+<HideTabButton></HideTabButton>
+<HidePDFButton></HidePDFButton>
+<ShowSearchBox></ShowSearchBox>
+<ShowResultsInfo></ShowResultsInfo>
+<ParameterName1></ParameterName1>
+<ParameterVal1></ParameterVal1>
+<ParameterCal1></ParameterCal1>
+<ParameterOpt1></ParameterOpt1>
+<ParameterName2></ParameterName2>
+<ParameterVal2></ParameterVal2>
+<ParameterCal2></ParameterCal2>
+<ParameterOpt2></ParameterOpt2>
+<ParameterName3></ParameterName3>
+<ParameterVal3></ParameterVal3>
+<ParameterCal3></ParameterCal3>
+<ParameterOpt3></ParameterOpt3>
+<ParameterName4></ParameterName4>
+<ParameterVal4></ParameterVal4>
+<ParameterCal4></ParameterCal4>
+<ParameterOpt4></ParameterOpt4>
+<ParameterName5></ParameterName5>
+<ParameterVal5></ParameterVal5>
+<ParameterCal5></ParameterCal5>
+<ParameterOpt5></ParameterOpt5>
+<PdfOrientation></PdfOrientation>
+<NoCSVQuotes></NoCSVQuotes>
+<NoRowSel></NoRowSel>
+<ShowSHC></ShowSHC>
+<UseColRe></UseColRe>
+<UseFixHdr></UseFixHdr>
+<HidePrint></HidePrint>
+<ReportNotes></ReportNotes>
+<UseColFilt></UseColFilt>
+<UseRowGroups></UseRowGroups>
+<UseRowGroupsOptions>Opt1</UseRowGroupsOptions>
+<DisplayRowGroupsCol></DisplayRowGroupsCol>
+<UseRowGroupsCounts></UseRowGroupsCounts>
+<sqlChartsReport></sqlChartsReport>
+<InitialsqlChart></InitialsqlChart>
+<InitialChartName></InitialChartName>
+<RowGroupsDesc></RowGroupsDesc>
+<sqlExportsReport></sqlExportsReport>
+<FLSMapField></FLSMapField>
+<ExcFrmList></ExcFrmList>
+<ExecGrp></ExecGrp>
+<ValueLi3>0</ValueLi3>
+<NoHeaderRow></NoHeaderRow>
+<ReportDirections></ReportDirections>
